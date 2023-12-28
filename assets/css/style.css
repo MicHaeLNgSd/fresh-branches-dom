@@ -9,6 +9,7 @@
   --mainColor: #2260cb;
   --secondColor: #1d1ba3;
   --thirdColor: #c5e1e5;
+  --activeTaskColor: lightgreen;
 }
 
 body {
@@ -34,10 +35,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center; */
 }
 
 .taskForm {
@@ -109,7 +106,7 @@ body {
 }
 
 .taskItem.finishedTask {
-  background-color: lightgreen;
+  background-color: var(--activeTaskColor);
 }
 
 .deleteTaskBtn {
