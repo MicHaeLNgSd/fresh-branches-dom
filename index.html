@@ -7,8 +7,33 @@
     <script src="./assets/js/index.js" defer></script>
     <link rel="stylesheet" href="./assets/css/reset.css" />
     <link rel="stylesheet" href="./assets/css/style.css" />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"
+      integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <h1>Hello DOM</h1>
+    <div class="tasks">
+      <form class="taskForm">
+        <input id="mainInput" type="text" name="taskInput" />
+        <button type="submit" id="addBtn">Add</button>
+      </form>
+      <ul id="taskContainer">
+        <!-- <li class="taskItem">
+          <p class="taskText">Lorem</p>
+          <button class="deleteTaskBtn">
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </li>
+        <li class="taskItem">
+          <p class="taskText">Lorem</p>
+          <button class="deleteTaskBtn">
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </li> -->
+      </ul>
+    </div>
   </body>
 </html>
