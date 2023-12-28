@@ -17,7 +17,6 @@ taskForm.addEventListener('submit', (e) => {
 
   const newTaskObj = createTaskObj(taskText);
   todos.push(newTaskObj);
-
   console.log(todos); //TODO delete
 
   const newTask = createTask(newTaskObj);
@@ -39,18 +38,7 @@ function createTask(taskObj) {
   const task = document.createElement('li');
   task.classList.add('taskItem');
   task.dataset.id = taskObj.id;
-  task.addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') return;
-    const currentTask = e.currentTarget;
-    // currentTask.classList.toggle('finishedTask');
-    todos.forEach((el) => {
-      if (el.id !== +currentTask.dataset.id) return;
-      el.isFinish = !el.isFinish;
-      el.isFinish
-        ? currentTask.classList.add('finishedTask')
-        : currentTask.classList.remove('finishedTask');
-    });
-  });
+  task.addEventListener('click', toggleIsFinish);
 
   const taskParagraph = document.createElement('p');
   taskParagraph.classList.add('taskText');
@@ -58,14 +46,7 @@ function createTask(taskObj) {
 
   const taskDeleteBtn = document.createElement('button');
   taskDeleteBtn.classList.add('deleteTaskBtn');
-  taskDeleteBtn.addEventListener('click', (e) => {
-    const taskToRemove = e.currentTarget.parentElement;
-    const taskToRemoveId = taskToRemove.dataset.id;
-
-    taskToRemove.remove();
-    todos = todos.filter((el) => el.id !== +taskToRemoveId);
-    console.log(todos); //TODO delete
-  });
+  taskDeleteBtn.addEventListener('click', deleteTask);
 
   const trashIcon = document.createElement('i');
   trashIcon.classList.add('far', 'fa-trash-alt');
@@ -75,4 +56,26 @@ function createTask(taskObj) {
   task.append(taskDeleteBtn);
 
   return task;
+}
+
+function toggleIsFinish(e) {
+  if (e.target.tagName === 'BUTTON') return;
+  const currentTask = e.currentTarget;
+  // currentTask.classList.toggle('finishedTask');
+  todos.forEach((el) => {
+    if (el.id !== +currentTask.dataset.id) return;
+    el.isFinish = !el.isFinish;
+    el.isFinish
+      ? currentTask.classList.add('finishedTask')
+      : currentTask.classList.remove('finishedTask');
+  });
+  console.log(todos); //TODO delete
+}
+
+function deleteTask(e) {
+  const taskToRemove = e.currentTarget.parentElement;
+  taskToRemove.remove();
+
+  todos = todos.filter((el) => el.id !== Number(taskToRemove.dataset.id));
+  console.log(todos); //TODO delete
 }
