@@ -11,9 +11,14 @@ let todos = [
     text: 'test1',
     isFinish: false,
   },
+  {
+    id: Date.now(),
+    text: 'test2',
+    isFinish: false,
+  },
 ];
 
-const todoTasks = todos.map((el) => createTask(el));
+const todoTasks = todos.map((elObj) => createTask(elObj));
 taskContainer.append(...todoTasks);
 
 taskForm.addEventListener('submit', (e) => {
