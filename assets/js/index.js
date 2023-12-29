@@ -62,13 +62,14 @@ function toggleIsFinish(e) {
   if (e.target.tagName === 'BUTTON') return;
   const currentTask = e.currentTarget;
   // currentTask.classList.toggle('finishedTask');
-  todos.forEach((el) => {
-    if (el.id !== +currentTask.dataset.id) return;
+  for (const el of todos) {
+    if (el.id !== +currentTask.dataset.id) continue;
     el.isFinish = !el.isFinish;
     el.isFinish
       ? currentTask.classList.add('finishedTask')
       : currentTask.classList.remove('finishedTask');
-  });
+    break;
+  }
   console.log(todos); //TODO delete
 }
 
