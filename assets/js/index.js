@@ -5,21 +5,28 @@ const mainInput = document.querySelector('#mainInput');
 const addBtn = document.querySelector('#addBtn');
 const taskContainer = document.querySelector('#taskContainer');
 
+const taskIdCounter = (
+  (i = 0) =>
+  () =>
+    ++i
+)();
+
 let todos = [
   {
-    id: Date.now(),
+    id: taskIdCounter(),
     text: 'test1',
     isFinish: false,
   },
   {
-    id: Date.now(),
+    id: taskIdCounter(),
     text: 'test2',
-    isFinish: false,
+    isFinish: true,
   },
 ];
 
 const todoTasks = todos.map((elObj) => createTask(elObj));
 taskContainer.append(...todoTasks);
+console.log(todos); //TODO delete
 
 taskForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -36,11 +43,11 @@ taskForm.addEventListener('submit', (e) => {
   e.target.reset();
 });
 
-function createTaskObj(taskText, isFinish = false) {
+function createTaskObj(taskText) {
   const newObj = {
-    id: Date.now(),
+    id: taskIdCounter(),
     text: taskText,
-    isFinish: isFinish,
+    isFinish: false,
   };
   return newObj;
 }
@@ -48,6 +55,7 @@ function createTaskObj(taskText, isFinish = false) {
 function createTask(taskObj) {
   const task = createElement('li', 'taskItem');
   task.dataset.id = taskObj.id;
+  if (taskObj.isFinish) task.classList.add('finishedTask');
   task.addEventListener('click', toggleIsFinish);
 
   const taskParagraph = createElement('p', 'taskText');
