@@ -46,27 +46,29 @@ function createTaskObj(taskText, isFinish = false) {
 }
 
 function createTask(taskObj) {
-  const task = document.createElement('li');
-  task.classList.add('taskItem');
+  const task = createElement('li', 'taskItem');
   task.dataset.id = taskObj.id;
   task.addEventListener('click', toggleIsFinish);
 
-  const taskParagraph = document.createElement('p');
-  taskParagraph.classList.add('taskText');
+  const taskParagraph = createElement('p', 'taskText');
   taskParagraph.textContent = taskObj.text;
 
-  const taskDeleteBtn = document.createElement('button');
-  taskDeleteBtn.classList.add('deleteTaskBtn');
+  const taskDeleteBtn = createElement('button', 'deleteTaskBtn');
   taskDeleteBtn.addEventListener('click', deleteTask);
 
-  const trashIcon = document.createElement('i');
-  trashIcon.classList.add('far', 'fa-trash-alt');
+  const trashIcon = createElement('i', 'far', 'fa-trash-alt');
   taskDeleteBtn.append(trashIcon);
 
   task.append(taskParagraph);
   task.append(taskDeleteBtn);
 
   return task;
+}
+
+function createElement(elName, ...className) {
+  const element = document.createElement(elName);
+  element.classList.add(...className);
+  return element;
 }
 
 function toggleIsFinish(e) {
