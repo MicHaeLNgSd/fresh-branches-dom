@@ -5,10 +5,16 @@ const mainInput = document.querySelector('#mainInput');
 const addBtn = document.querySelector('#addBtn');
 const taskContainer = document.querySelector('#taskContainer');
 
-let todos = [];
+let todos = [
+  {
+    id: Date.now(),
+    text: 'test1',
+    isFinish: false,
+  },
+];
 
-// taskContainer.append(createTask('Lorem1'));
-// taskContainer.append(createTask('Lorem2'));
+const todoTasks = todos.map((el) => createTask(el));
+taskContainer.append(...todoTasks);
 
 taskForm.addEventListener('submit', (e) => {
   e.preventDefault();
