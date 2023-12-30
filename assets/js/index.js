@@ -52,14 +52,14 @@ function createTaskObj(taskText) {
   return newObj;
 }
 
-function createTask(taskObj) {
+function createTask({ id: taskId, isFinish: taskIsFinish, text: taskText }) {
   const task = createElement('li', 'taskItem');
-  task.dataset.id = taskObj.id;
-  if (taskObj.isFinish) task.classList.add('finishedTask');
+  task.dataset.id = taskId;
+  if (taskIsFinish) task.classList.add('finishedTask');
   task.addEventListener('click', toggleIsFinish);
 
   const taskParagraph = createElement('p', 'taskText');
-  taskParagraph.textContent = taskObj.text;
+  taskParagraph.textContent = taskText;
 
   const taskDeleteBtn = createElement('button', 'deleteTaskBtn');
   taskDeleteBtn.addEventListener('click', deleteTask);
@@ -79,9 +79,9 @@ function createElement(elName, ...className) {
   return element;
 }
 
-function toggleIsFinish(e) {
-  if (e.target.tagName === 'BUTTON') return;
-  const currentTask = e.currentTarget;
+function toggleIsFinish({ target: { tagName: targetTag }, currentTarget }) {
+  if (targetTag === 'BUTTON') return;
+  const currentTask = currentTarget;
   // currentTask.classList.toggle('finishedTask');
   for (const el of todos) {
     if (el.id !== +currentTask.dataset.id) continue;
@@ -94,8 +94,8 @@ function toggleIsFinish(e) {
   console.log(todos); //TODO delete
 }
 
-function deleteTask(e) {
-  const taskToRemove = e.currentTarget.parentElement;
+function deleteTask({ currentTarget: { parentElement: currentParent } }) {
+  const taskToRemove = currentParent;
   taskToRemove.remove();
 
   todos = todos.filter((el) => el.id !== Number(taskToRemove.dataset.id));
