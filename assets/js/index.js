@@ -35,7 +35,7 @@ async function getUsersByAsyncAwait() {
     const res = await fetch(usersAPI);
     const data = await res.json();
 
-    usersArr = await data.map((el) => createUserCard(el));
+    usersArr = data.map((el) => createUserCard(el));
     userCardList.append(...usersArr);
     loadingElem.remove();
   } catch (err) {
