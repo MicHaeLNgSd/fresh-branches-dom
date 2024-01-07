@@ -22,9 +22,9 @@ function getUsersByPromise() {
         return createUserCard(el);
       });
       userCardList.append(...usersArr);
-      loadingElem.remove();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(() => loadingElem.remove());
 }
 
 async function getUsersByAsyncAwait() {
@@ -37,48 +37,44 @@ async function getUsersByAsyncAwait() {
 
     usersArr = data.map((el) => createUserCard(el));
     userCardList.append(...usersArr);
-    loadingElem.remove();
   } catch (err) {
     console.log(err);
+  } finally {
+    loadingElem.remove();
   }
 }
 
-const createUserLinkElem = (aClass, aAttr, faClass) =>
+const createUserLinkElem = (aAttr, faClass) =>
   createElem('li', {
-    class: 'userLink',
-    child: [
-      'a',
-      {
-        class: aClass,
+    attr: { class: 'userLink' },
+    childs: [
+      createElem('a', {
         attr: aAttr,
-        child: ['i', { class: faClass }],
-      },
+        childs: [createElem('i', { attr: { class: faClass } })],
+      }),
     ],
   });
 
 function createLinksSection(uPhone, uEmail, uWebsite) {
-  const userLinks = createElem('ul', { class: 'userLinks' });
+  const userLinks = createElem('ul', { attr: { class: 'userLinks' } });
 
   if (uPhone) {
     const phone = createUserLinkElem(
-      'phone',
-      { href: `tel:${uPhone}`, title: uPhone },
+      { class: 'phone', href: `tel:${uPhone}`, title: uPhone },
       'fas fa-phone'
     );
     userLinks.append(phone);
   }
   if (uEmail) {
     const phone = createUserLinkElem(
-      'email',
-      { href: `mailto:${uEmail}`, title: uEmail },
+      { class: 'email', href: `mailto:${uEmail}`, title: uEmail },
       'fas fa-envelope'
     );
     userLinks.append(phone);
   }
   if (uWebsite) {
     const phone = createUserLinkElem(
-      'website',
-      { href: uWebsite, title: uWebsite },
+      { class: 'website', href: uWebsite, title: uWebsite },
       'fas fa-globe'
     );
     userLinks.append(phone);
@@ -89,19 +85,24 @@ function createLinksSection(uPhone, uEmail, uWebsite) {
 
 function createElem(
   tag,
-  { id: elId, class: elClass, attr: elAttr, text: elText, child: elChild }
+  { attr: elAttr, text: elText, childs: elChilds, event: elEvent } = {}
 ) {
   const elem = document.createElement(tag);
 
-  if (elId) elem.id = elId;
-  if (elClass) elem.className = elClass;
   if (elAttr) {
     for (const [key, val] of Object.entries(elAttr)) {
       elem.setAttribute(key, val);
     }
   }
   if (elText) elem.textContent = elText;
-  if (elChild) elem.append(createElem(elChild[0], elChild[1]));
+  if (elChilds) {
+    elChilds.forEach((child) => elem.append(child));
+  }
+  if (elEvent) {
+    for (const [eName, eCallback] of Object.entries(elEvent)) {
+      elem.addEventListener(eName, eCallback);
+    }
+  }
   return elem;
 }
 
@@ -112,21 +113,24 @@ function createUserCard({
   email: uEmail,
   phone: uPhone,
   website: uWebsite,
+  photo: uPhoto,
 }) {
-  const userCardItem = createElem('li', { class: 'userCardItem' });
-  const userCard = createElem('article', { class: 'userCard' });
-  const cardHeader = createElem('div', { class: 'cardHeader' });
+  const userCardItem = createElem('li', { attr: { class: 'userCardItem' } });
+  const userCard = createElem('article', { attr: { class: 'userCard' } });
+  const cardHeader = createElem('div', { attr: { class: 'cardHeader' } });
 
   const userImage = createElem('img', {
-    class: 'userImage',
-    attr: { src: standartImg, alt: 'userImg' },
+    attr: { class: 'userImage', src: uPhoto ?? standartImg, alt: 'userImg' },
   });
 
-  const contentContainer = createElem('div', { class: 'contentContainer' });
-  const name = createElem('h2', { class: 'name', text: uName });
-  const username = createElem('h3', { class: 'username', text: `@${uUsername}` });
+  const contentContainer = createElem('div', { attr: { class: 'contentContainer' } });
+  const name = createElem('h2', { attr: { class: 'name' }, text: uName });
+  const username = createElem('h3', {
+    attr: { class: 'username' },
+    text: `@${uUsername}`,
+  });
   const address = createElem('p', {
-    class: 'address',
+    attr: { class: 'address' },
     text: `${uAddress.city}, ${uAddress.street}`,
   });
 
