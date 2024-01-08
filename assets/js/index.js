@@ -8,7 +8,7 @@ const standartImg =
   'https://discourse.disneyheroesgame.com/uploads/default/original/3X/7/5/75b8e54268b741e4211fa45a1514e664d8b1595e.jpeg';
 
 reloadBtn.addEventListener('click', getUsersByAsyncAwait); //getUsersByPromise getUsersByAsyncAwait
-const loadingElem = createElem('div', { class: 'loader' });
+const loadingElem = createElem('div', { attr: { class: 'loader' } });
 
 let usersArr = [];
 
