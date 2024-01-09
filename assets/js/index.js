@@ -8,7 +8,7 @@ const standartImg =
   'https://discourse.disneyheroesgame.com/uploads/default/original/3X/7/5/75b8e54268b741e4211fa45a1514e664d8b1595e.jpeg';
 
 reloadBtn.addEventListener('click', getUsersByAsyncAwait); //getUsersByPromise getUsersByAsyncAwait
-const loadingElem = createElem('div', { attr: { class: 'loader' } });
+const loadingElem = createElem('div', { class: 'loader' });
 
 let usersArr = [];
 
@@ -45,18 +45,16 @@ async function getUsersByAsyncAwait() {
 }
 
 const createUserLinkElem = (aAttr, faClass) =>
-  createElem('li', {
-    attr: { class: 'userLink' },
-    childs: [
-      createElem('a', {
-        attr: aAttr,
-        childs: [createElem('i', { attr: { class: faClass } })],
-      }),
-    ],
-  });
+  createElem(
+    'li',
+    {
+      class: 'userLink',
+    },
+    createElem('a', aAttr, createElem('i', { class: faClass }))
+  );
 
 function createLinksSection(uPhone, uEmail, uWebsite) {
-  const userLinks = createElem('ul', { attr: { class: 'userLinks' } });
+  const userLinks = createElem('ul', { class: 'userLinks' });
 
   if (uPhone) {
     const phone = createUserLinkElem(
@@ -83,26 +81,19 @@ function createLinksSection(uPhone, uEmail, uWebsite) {
   return userLinks;
 }
 
-function createElem(
-  tag,
-  { attr: elAttr, text: elText, childs: elChilds, event: elEvent } = {}
-) {
+function createElem(tag, elAttr = {}, ...childs) {
   const elem = document.createElement(tag);
 
-  if (elAttr) {
-    for (const [key, val] of Object.entries(elAttr)) {
+  for (const [key, val] of Object.entries(elAttr)) {
+    if (key.slice(0, 2) === 'on' && val instanceof Function) {
+      elem.addEventListener(key.slice(2), val);
+    } else {
       elem.setAttribute(key, val);
     }
   }
-  if (elText) elem.textContent = elText;
-  if (elChilds) {
-    elChilds.forEach((child) => elem.append(child));
-  }
-  if (elEvent) {
-    for (const [eName, eCallback] of Object.entries(elEvent)) {
-      elem.addEventListener(eName, eCallback);
-    }
-  }
+
+  childs.forEach((child) => elem.append(child));
+
   return elem;
 }
 
@@ -115,24 +106,24 @@ function createUserCard({
   website: uWebsite,
   photo: uPhoto,
 }) {
-  const userCardItem = createElem('li', { attr: { class: 'userCardItem' } });
-  const userCard = createElem('article', { attr: { class: 'userCard' } });
-  const cardHeader = createElem('div', { attr: { class: 'cardHeader' } });
+  const userCardItem = createElem('li', { class: 'userCardItem' });
+  const userCard = createElem('article', { class: 'userCard' });
+  const cardHeader = createElem('div', { class: 'cardHeader' });
 
   const userImage = createElem('img', {
-    attr: { class: 'userImage', src: uPhoto ?? standartImg, alt: 'userImg' },
+    class: 'userImage',
+    src: uPhoto ?? standartImg,
+    alt: 'userImg',
   });
 
-  const contentContainer = createElem('div', { attr: { class: 'contentContainer' } });
-  const name = createElem('h2', { attr: { class: 'name' }, text: uName });
-  const username = createElem('h3', {
-    attr: { class: 'username' },
-    text: `@${uUsername}`,
-  });
-  const address = createElem('p', {
-    attr: { class: 'address' },
-    text: `${uAddress.city}, ${uAddress.street}`,
-  });
+  const contentContainer = createElem('div', { class: 'contentContainer' });
+  const name = createElem('h2', { class: 'name' }, uName);
+  const username = createElem('h3', { class: 'username' }, `@${uUsername}`);
+  const address = createElem(
+    'p',
+    { class: 'address' },
+    `${uAddress.city}, ${uAddress.street}`
+  );
 
   userCardItem.append(userCard);
   userCard.append(cardHeader, userImage, contentContainer);
@@ -145,3 +136,12 @@ function createUserCard({
 
   return userCardItem;
 }
+
+const sayHello = (e) => console.log(`${e.currentTarget.id} Hello`);
+
+const dMain = createElem('div', {
+  class: 'containetTest',
+  id: 'dMain',
+  onclick: sayHello,
+});
+document.body.append(dMain);
