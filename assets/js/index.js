@@ -91,8 +91,7 @@ function createElem(tag, elAttr = {}, ...childs) {
       elem.setAttribute(key, val);
     }
   }
-
-  childs.forEach((child) => elem.append(child));
+  elem.append(...childs);
 
   return elem;
 }
@@ -100,7 +99,7 @@ function createElem(tag, elAttr = {}, ...childs) {
 function createUserCard({
   name: uName,
   username: uUsername,
-  address: uAddress,
+  address: { city: uCity, street: uStreet },
   email: uEmail,
   phone: uPhone,
   website: uWebsite,
@@ -119,11 +118,7 @@ function createUserCard({
   const contentContainer = createElem('div', { class: 'contentContainer' });
   const name = createElem('h2', { class: 'name' }, uName);
   const username = createElem('h3', { class: 'username' }, `@${uUsername}`);
-  const address = createElem(
-    'p',
-    { class: 'address' },
-    `${uAddress.city}, ${uAddress.street}`
-  );
+  const address = createElem('p', { class: 'address' }, `${uCity}, ${uStreet}`);
 
   userCardItem.append(userCard);
   userCard.append(cardHeader, userImage, contentContainer);
